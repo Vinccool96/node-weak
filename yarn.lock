@@ -358,6 +358,11 @@ expect@*:
     jest-message-util "^29.2.1"
     jest-util "^29.2.1"
 
+expose-ts-gc@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/expose-ts-gc/-/expose-ts-gc-1.0.0.tgz#46ea73624b8c27a5179e9f1ba51b96d496490a2a"
+  integrity sha512-ag2kfjVJ0oynkA7jIQ3R4J5+gz0YBuQBLBfjIPK1bORe5WKKR19hDmmGEETL3kJwU/iAvRhXctD8KrGFJrEJ6Q==
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"

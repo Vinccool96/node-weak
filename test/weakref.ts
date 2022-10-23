@@ -1,9 +1,10 @@
 import assert from "assert"
 import weak from "../lib/weak"
+import { gc } from "expose-ts-gc"
 
 describe('Weakref', function () {
 
-  afterEach(weak.gc)
+  afterEach(gc)
 
   it('weak() should return a `Weakref` instance', function () {
     var ref = weak({})
@@ -67,7 +68,7 @@ describe('Weakref', function () {
     let o: { foo: string } | null = {foo: 'bar'}, r = weak(o);
     o = null
     assert.equal('bar', r.foo)
-    weak.gc()
+    gc()
     assert(!r.foo)
     assert.equal(0,Object.keys(r).length)
   })

@@ -1,5 +1,6 @@
 import assert from "assert"
 import weak from "../lib/weak"
+import { gc } from "expose-ts-gc"
 
 function checkFunction (prop) {
   it('should have a function "' + prop + '"', function () {
@@ -9,7 +10,7 @@ function checkFunction (prop) {
 
 describe('exports', function () {
 
-  afterEach(weak.gc)
+  afterEach(gc)
 
   it('should be a function', function () {
     assert('function' == typeof weak);
@@ -25,6 +26,7 @@ describe('exports', function () {
   checkFunction('removeCallbacks')
 
   it('should be a circular reference to "create"', function () {
+    const w = weak
     assert(weak === weak.create);
   })
 

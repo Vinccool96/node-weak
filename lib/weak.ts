@@ -5,7 +5,7 @@
 import {EventEmitter} from "events"
 import b from "bindings"
 
-var bindings = b('weakref.node');
+const bindings = b('weakref.node');
 
 /**
  * Set global weak callback function.
@@ -24,19 +24,20 @@ bindings._setCallback(callback);
  * This is completely arbitrary...
  * Could be any value....
  */
+const CB = '_CB';
 
-var CB = '_CB';
+declare class WeakRef<T> {}
 
 /**
- * Creates and returns a new Weakref instance. Optionally attaches
- * a weak callback to invoke when the Object gets garbage collected.
+ * Makes weak references to JavaScript Objects
  *
- * @api public
+ * @param object can be a regular Object, an Array, a Function, a RegExp, or any of the primitive types or constructor function created with new
+ * @param callback a callback function to be invoked before the object is garbage collected
  */
-export function create(obj, fn) {
-  var weakref = bindings._create(obj, new EventEmitter());
-  if ('function' == typeof fn) {
-    exports.addCallback(weakref, fn);
+export function create<T extends object>(object: T, callback?: () => void): WeakRef<T> {
+  const weakref = bindings._create(object, new EventEmitter());
+  if ('function' == typeof callback) {
+    exports.addCallback(weakref, callback);
   }
   return weakref;
 }
@@ -47,7 +48,7 @@ export function create(obj, fn) {
  * @api public
  */
 export function addCallback(weakref, fn) {
-  var emitter = bindings._getEmitter(weakref);
+  const emitter = bindings._getEmitter(weakref);
   return emitter.on(CB, fn);
 }
 
@@ -55,7 +56,7 @@ export function addCallback(weakref, fn) {
  * Removes a weak callback function from the Weakref instance.
  */
 export function removeCallback(weakref, fn) {
-  var emitter = bindings._getEmitter(weakref);
+  const emitter = bindings._getEmitter(weakref);
   return emitter.removeListener(CB, fn);
 }
 
@@ -66,7 +67,7 @@ export function removeCallback(weakref, fn) {
  */
 
 export function callbacks(weakref) {
-  var emitter = bindings._getEmitter(weakref);
+  const emitter = bindings._getEmitter(weakref);
   return emitter.listeners(CB);
 }
 
@@ -78,7 +79,7 @@ export function callbacks(weakref) {
  */
 
 export function removeCallbacks(weakref) {
-  var emitter = bindings._getEmitter(weakref);
+  const emitter = bindings._getEmitter(weakref);
   return emitter.removeAllListeners(CB);
 }
 
@@ -93,6 +94,15 @@ export function callback(emitter) {
   emitter = null;
 }
 
-export default {
-  create, addCallback, removeCallback, removeCallbacks, callbacks, ...bindings
-}
+export default create
+
+// Keep consistency with old weak package
+create.create = create
+create.callbacks = callbacks
+create.addCallback = addCallback
+create.removeCallback = removeCallback
+create.removeCallbacks = removeCallbacks
+
+Object.keys(bindings).forEach(function (key) {
+  create[key] = bindings[key]
+})

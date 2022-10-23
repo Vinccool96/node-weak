@@ -1,9 +1,10 @@
 import assert from "assert"
 import weak from "../lib/weak"
+import { gc } from "expose-ts-gc"
 
 describe('weak()', function () {
 
-  afterEach(weak.gc)
+  afterEach(gc)
 
   describe('garbage collection callback', function () {
 
@@ -18,7 +19,7 @@ describe('weak()', function () {
         called = true
       })
       assert(!called)
-      weak.gc()
+      gc()
       assert(called)
     })
 
@@ -33,7 +34,7 @@ describe('weak()', function () {
       weak.addCallback(r, function () {
         called2 = true
       })
-      weak.gc()
+      gc()
       assert(called1)
       assert(called2)
     })
@@ -52,7 +53,7 @@ describe('weak()', function () {
 
       assert(!calledGcCallback)
       assert(!calledTickCallback)
-      weak.gc()
+      gc()
       assert(calledGcCallback)
       assert(!calledTickCallback)
       setTimeout(function() {
@@ -82,7 +83,7 @@ describe('removeCallback()', function() {
       , fn = function() { called = true }
       , r = weak({}, fn)
     weak.removeCallback(r, fn)
-    weak.gc()
+    gc()
     assert(!called)
   })
 
@@ -93,7 +94,7 @@ describe('removeCallbacks()', function() {
   it('removed callbacks should not be called', function() {
      var called = false, fn = function() { called = true }, r = weak({}, fn)
      weak.removeCallbacks(r)
-     weak.gc()
+     gc()
      assert(!called)
   })
 

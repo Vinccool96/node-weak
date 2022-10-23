@@ -1,11 +1,10 @@
 import assert from "assert"
 import weak from "../lib/weak"
+import { gc } from "expose-ts-gc"
 
 describe('create()', function () {
 
-  afterEach(function () {
-    weak.gc()
-  })
+  afterEach(gc)
 
   it('should throw on non-"object" values', function () {
     [0, 0.0, true, false, null, undefined, 'foo'
