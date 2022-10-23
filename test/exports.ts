@@ -1,5 +1,5 @@
-var assert = require('assert');
-var weak = require('../')
+import assert from "assert"
+import weak from "../lib/weak"
 
 function checkFunction (prop) {
   it('should have a function "' + prop + '"', function () {
@@ -9,7 +9,7 @@ function checkFunction (prop) {
 
 describe('exports', function () {
 
-  afterEach(gc)
+  afterEach(weak.gc)
 
   it('should be a function', function () {
     assert('function' == typeof weak);

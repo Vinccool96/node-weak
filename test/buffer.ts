@@ -1,21 +1,21 @@
-var assert = require('assert')
-var weak = require('../')
+import assert from "assert"
+import weak from "../lib/weak"
 
 describe('weak()', function () {
 
-  afterEach(gc)
+  afterEach(weak.gc)
 
   describe('Buffer', function () {
 
     it('should invoke callback before destroying Buffer', function () {
 
       var called = false
-      weak(Buffer('test'), function (buf) {
+      weak.create(new weak.Buffer('test'), function (buf) {
         called = true
       })
 
       assert(!called)
-      gc()
+      weak.gc()
       assert(called)
     })
 

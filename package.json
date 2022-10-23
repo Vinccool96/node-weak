@@ -3,7 +3,7 @@
   "contributors": [
     "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
   ],
-  "name": "weak",
+  "name": "node-weakref",
   "license": "MIT",
   "description": "Make weak references to JavaScript Objects.",
   "keywords": [
@@ -15,20 +15,27 @@
     "function",
     "callback"
   ],
-  "version": "1.0.1",
+  "version": "1.1.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/TooTallNate/node-weak.git"
+    "url": "git://github.com/Vinccool96/node-weak.git"
   },
-  "main": "lib/weak.js",
+  "main": "lib/weak.ts",
+  "type": "module",
   "scripts": {
-    "test": "mocha -gc --reporter spec"
+    "test": "ts-mocha 'test/**/*.ts' -gc --reporter spec"
   },
   "dependencies": {
-    "bindings": "^1.2.1",
-    "nan": "^2.0.5"
+    "bindings": "^1.5.0",
+    "nan": "^2.17.0"
   },
   "devDependencies": {
-    "mocha": "5"
+    "@types/bindings": "^1.5.1",
+    "@types/expect": "^24.3.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.3",
+    "mocha": "^10.1.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^4.8.4"
   }
 }

@@ -1,10 +1,11 @@
-
 /**
  * Module dependencies.
  */
 
-var Emitter = require('events').EventEmitter;
-var bindings = require('bindings')('weakref.node');
+import {EventEmitter} from "events"
+import b from "bindings"
+
+var bindings = b('weakref.node');
 
 /**
  * Set global weak callback function.
@@ -16,19 +17,7 @@ bindings._setCallback(callback);
  * Module exports.
  */
 
-exports = module.exports = create;
-exports.addCallback = exports.addListener = addCallback;
-exports.removeCallback = exports.removeListener = removeCallback;
-exports.removeCallbacks = exports.removeListeners = removeCallbacks;
-exports.callbacks = exports.listeners = callbacks;
-
-// backwards-compat with node-weakref
-exports.weaken = exports.create = exports;
-
 // re-export all the binding functions onto the exports
-Object.keys(bindings).forEach(function (name) {
-  exports[name] = bindings[name];
-});
 
 /**
  * Internal emitter event name.
@@ -44,9 +33,8 @@ var CB = '_CB';
  *
  * @api public
  */
-
-function create (obj, fn) {
-  var weakref = bindings._create(obj, new Emitter());
+export function create(obj, fn) {
+  var weakref = bindings._create(obj, new EventEmitter());
   if ('function' == typeof fn) {
     exports.addCallback(weakref, fn);
   }
@@ -58,19 +46,15 @@ function create (obj, fn) {
  *
  * @api public
  */
-
-function addCallback (weakref, fn) {
+export function addCallback(weakref, fn) {
   var emitter = bindings._getEmitter(weakref);
   return emitter.on(CB, fn);
 }
 
 /**
  * Removes a weak callback function from the Weakref instance.
- *
- * @api public
  */
-
-function removeCallback (weakref, fn) {
+export function removeCallback(weakref, fn) {
   var emitter = bindings._getEmitter(weakref);
   return emitter.removeListener(CB, fn);
 }
@@ -81,7 +65,7 @@ function removeCallback (weakref, fn) {
  * @api public
  */
 
-function callbacks (weakref) {
+export function callbacks(weakref) {
   var emitter = bindings._getEmitter(weakref);
   return emitter.listeners(CB);
 }
@@ -93,7 +77,7 @@ function callbacks (weakref) {
  * @api public
  */
 
-function removeCallbacks (weakref) {
+export function removeCallbacks(weakref) {
   var emitter = bindings._getEmitter(weakref);
   return emitter.removeAllListeners(CB);
 }
@@ -104,7 +88,11 @@ function removeCallbacks (weakref) {
  * @api private
  */
 
-function callback (emitter) {
+export function callback(emitter) {
   emitter.emit(CB);
   emitter = null;
+}
+
+export default {
+  create, addCallback, removeCallback, removeCallbacks, callbacks, ...bindings
 }

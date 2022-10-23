@@ -1,9 +1,9 @@
-var assert = require('assert')
-var weak = require('../')
+import assert from "assert"
+import weak from "../lib/weak"
 
 describe('weak()', function () {
 
-  afterEach(gc)
+  afterEach(weak.gc)
 
   describe('garbage collection callback', function () {
 
@@ -18,7 +18,7 @@ describe('weak()', function () {
         called = true
       })
       assert(!called)
-      gc()
+      weak.gc()
       assert(called)
     })
 
@@ -33,7 +33,7 @@ describe('weak()', function () {
       weak.addCallback(r, function () {
         called2 = true
       })
-      gc()
+      weak.gc()
       assert(called1)
       assert(called2)
     })
@@ -52,7 +52,7 @@ describe('weak()', function () {
 
       assert(!calledGcCallback)
       assert(!calledTickCallback)
-      gc()
+      weak.gc()
       assert(calledGcCallback)
       assert(!calledTickCallback)
       setTimeout(function() {
@@ -82,7 +82,7 @@ describe('removeCallback()', function() {
       , fn = function() { called = true }
       , r = weak({}, fn)
     weak.removeCallback(r, fn)
-    gc()
+    weak.gc()
     assert(!called)
   })
 
@@ -91,11 +91,9 @@ describe('removeCallback()', function() {
 describe('removeCallbacks()', function() {
 
   it('removed callbacks should not be called', function() {
-     var called = false
-      , fn = function() { called = true }
-      , r = weak({}, fn)
+     var called = false, fn = function() { called = true }, r = weak({}, fn)
      weak.removeCallbacks(r)
-     gc()
+     weak.gc()
      assert(!called)
   })
 

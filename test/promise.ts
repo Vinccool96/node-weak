@@ -1,5 +1,5 @@
-var assert = require('assert');
-var weak = require('../')
+import assert from "assert"
+import weak from "../lib/weak"
 
 describe('promise', function () {
   if (!global.Promise) {

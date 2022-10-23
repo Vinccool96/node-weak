@@ -1,9 +1,9 @@
-var assert = require('assert')
-var weak = require('../')
+import assert from "assert"
+import weak from "../lib/weak"
 
 describe('Weakref', function () {
 
-  afterEach(gc)
+  afterEach(weak.gc)
 
   it('weak() should return a `Weakref` instance', function () {
     var ref = weak({})
@@ -59,18 +59,15 @@ describe('Weakref', function () {
   })
 
   it('should proxy enumeration', function () {
-    var o = { a: 'a', b: 'b', c: 'c', d: 'd' }
-      , r = weak(o)
+    var o = { a: 'a', b: 'b', c: 'c', d: 'd' }, r = weak(o)
     assert.deepEqual(Object.keys(o), Object.keys(r))
   })
 
-  it('should act like an empty object after target is gc\'d'
-  , function () {
-    var o = { foo: 'bar' }
-      , r = weak(o)
+  it('should act like an empty object after target is gc\'d', function () {
+    let o: { foo: string } | null = {foo: 'bar'}, r = weak(o);
     o = null
     assert.equal('bar', r.foo)
-    gc()
+    weak.gc()
     assert(!r.foo)
     assert.equal(0,Object.keys(r).length)
   })
