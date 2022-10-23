@@ -1,7 +1,8 @@
 {
   "author": "Ben Noordhuis <info@bnoordhuis.nl>",
   "contributors": [
-    "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)"
+    "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+    "Vincent Girard <vinccool96@gmail.com>"
   ],
   "name": "node-weakref",
   "license": "MIT",
@@ -20,8 +21,8 @@
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
   },
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./build/lib/weak.js",
+  "types": "./build/lib/weak.d.ts",
   "scripts": {
     "build": "tsc",
     "prepublish": "yarn run build && yarn pack",

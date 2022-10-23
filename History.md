@@ -1,4 +1,9 @@
 
+1.1.0 / 2022-10-23
+==================
+
+ * Added support for Node up to 16.x (tested, 18.x may be supported)
+
 1.0.1 / 2016-01-03
 ==================
 
