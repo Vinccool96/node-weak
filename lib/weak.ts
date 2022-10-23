@@ -10,14 +10,7 @@ const bindings = b('weakref.node');
 /**
  * Set global weak callback function.
  */
-
 bindings._setCallback(callback);
-
-/**
- * Module exports.
- */
-
-// re-export all the binding functions onto the exports
 
 /**
  * Internal emitter event name.
@@ -26,7 +19,9 @@ bindings._setCallback(callback);
  */
 const CB = '_CB';
 
-declare class WeakRef<T> {}
+declare type WeakRef<T> = {
+  [key in keyof T]: T[key]
+}
 
 /**
  * Makes weak references to JavaScript Objects
@@ -34,7 +29,7 @@ declare class WeakRef<T> {}
  * @param object can be a regular Object, an Array, a Function, a RegExp, or any of the primitive types or constructor function created with new
  * @param callback a callback function to be invoked before the object is garbage collected
  */
-export function create<T extends object>(object: T, callback?: () => void): WeakRef<T> {
+export function create<T extends object>(object: T, callback?: (obj: T) => void): WeakRef<T> {
   const weakref = bindings._create(object, new EventEmitter());
   if ('function' == typeof callback) {
     exports.addCallback(weakref, callback);
@@ -43,43 +38,44 @@ export function create<T extends object>(object: T, callback?: () => void): Weak
 }
 
 /**
- * Adds a weak callback function to the Weakref instance.
+ * Adds callback to the Array of callback functions that will be invoked before the Object gets garbage collected. The callbacks get executed in the order that they are added.
  *
- * @api public
+ * @param ref weak reference object
+ * @param callback function to be called
  */
-export function addCallback(weakref, fn) {
-  const emitter = bindings._getEmitter(weakref);
-  return emitter.on(CB, fn);
+export function addCallback(ref: WeakRef<any>, callback: () => void): NodeJS.EventEmitter {
+  const emitter = bindings._getEmitter(ref);
+  return emitter.on(CB, callback);
 }
 
 /**
- * Removes a weak callback function from the Weakref instance.
+ * Removes callback from the Array of callback functions that will be invoked before the Object gets garbage collected.
+ *
+ * @param ref weak reference object
+ * @param callback function to be called
  */
-export function removeCallback(weakref, fn) {
-  const emitter = bindings._getEmitter(weakref);
-  return emitter.removeListener(CB, fn);
+export function removeCallback(ref: WeakRef<any>, callback: () => void): NodeJS.EventEmitter {
+  const emitter = bindings._getEmitter(ref);
+  return emitter.removeListener(CB, callback);
 }
 
 /**
- * Returns a copy of the listeners on the Weakref instance.
+ * Returns an Array that ref iterates through to invoke the GC callbacks. This utilizes node's EventEmitter#listeners() function and therefore returns a copy in node 0.10 and newer.
  *
- * @api public
+ * @param ref weak reference object
  */
-
-export function callbacks(weakref) {
-  const emitter = bindings._getEmitter(weakref);
+export function callbacks(ref) {
+  const emitter = bindings._getEmitter(ref);
   return emitter.listeners(CB);
 }
 
-
 /**
- * Removes all callbacks on the Weakref instance.
+ * Empties the Array of callback functions that will be invoked before the Object gets garbage collected.
  *
- * @api public
+ * @param ref weak reference object
  */
-
-export function removeCallbacks(weakref) {
-  const emitter = bindings._getEmitter(weakref);
+export function removeCallbacks(ref) {
+  const emitter = bindings._getEmitter(ref);
   return emitter.removeAllListeners(CB);
 }
 
@@ -88,13 +84,39 @@ export function removeCallbacks(weakref) {
  *
  * @api private
  */
-
-export function callback(emitter) {
+function callback(emitter) {
   emitter.emit(CB);
   emitter = null;
 }
 
-export default create
+/**
+ * Returns the actual reference to the Object that this weak reference was created with. If this is called with a dead reference, undefined is returned.
+ * @param ref weak reference object
+ */
+export function get<T>(ref: WeakRef<T>): T | undefined {
+  const emitter = bindings._getEmitter(ref);
+  return emitter.get(CB);
+}
+
+/**
+ * Checks to see if ref is a dead reference. Returns true if the original Object has already been GC'd, false otherwise
+ *
+ * @param ref weak reference object
+ */
+export function isDead(ref: WeakRef<any> | WeakRef<undefined>): ref is WeakRef<undefined> {
+  const emitter = bindings._getEmitter(ref);
+  return emitter.isDead(CB);
+}
+
+/**
+ * Checks to see if obj is "weak reference" instance. Returns true if the passed in object is a "weak reference", false otherwise.
+ *
+ * @param obj object to check
+ */
+function isWeakRef(obj: any): obj is WeakRef<any> {
+  const emitter = bindings._getEmitter(obj);
+  return emitter.isWeakRef(CB);
+}
 
 // Keep consistency with old weak package
 create.create = create
@@ -102,7 +124,12 @@ create.callbacks = callbacks
 create.addCallback = addCallback
 create.removeCallback = removeCallback
 create.removeCallbacks = removeCallbacks
+create.get = get
+create.isDead = isDead
+create.isWeakRef = isWeakRef
 
 Object.keys(bindings).forEach(function (key) {
   create[key] = bindings[key]
 })
+
+export default create

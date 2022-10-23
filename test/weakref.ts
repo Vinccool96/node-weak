@@ -12,36 +12,31 @@ describe('Weakref', function () {
   })
 
   it('should proxy named gets to the target', function () {
-    var o = { foo: 'bar' }
-      , r = weak(o)
+    var o = { foo: 'bar' }, r = weak(o)
     assert.equal(r.foo, 'bar')
   })
 
   it('should proxy named sets to the target', function () {
-    var o = {}
-      , r = weak(o)
+    var o = {}, r = weak(o)
     r.foo = 'bar'
     assert.equal(r.foo, 'bar')
   })
 
   it('should proxy named deletes to the target', function () {
-    var o = { foo: 'bar' }
-     ,  r = weak(o)
+    var o = { foo: 'bar' },  r = weak(o)
     delete r.foo
     assert(!r.foo)
   })
 
   it('should proxy indexed gets to the target', function () {
-    var a = [ 'foo' ]
-      , r = weak(a)
+    var a = [ 'foo' ], r = weak(a)
     assert.equal(1, a.length)
     assert.equal(1, r.length)
     assert.equal('foo', r[0])
   })
 
   it('should proxy indexed sets to the target', function () {
-    var a = []
-      , r = weak(a)
+    var a = [], r = weak(a)
     assert.equal(0, a.length)
     assert.equal(0, r.length)
     r[0] = 'foo'

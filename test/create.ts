@@ -10,6 +10,7 @@ describe('create()', function () {
     [0, 0.0, true, false, null, undefined, 'foo'
     ].forEach(function (val) {
       assert.throws(function () {
+        // @ts-ignore
         weak.create(val)
       })
     })
