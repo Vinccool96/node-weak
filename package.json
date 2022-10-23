@@ -4,7 +4,7 @@
     "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
     "Vincent Girard <vinccool96@gmail.com>"
   ],
-  "name": "node-weakref",
+  "name": "node-weak-ref",
   "license": "MIT",
   "description": "Make weak references to JavaScript Objects.",
   "keywords": [
