@@ -20,11 +20,14 @@
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
   },
-  "main": "lib/weak.ts",
-  "type": "module",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "scripts": {
-    "test": "ts-mocha 'test/**/*.ts' -gc --reporter spec"
+    "build": "tsc",
+    "prepublish": "yarn run build && yarn pack",
+    "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec"
   },
+  "type": "module",
   "dependencies": {
     "bindings": "^1.5.0",
     "nan": "^2.17.0"
