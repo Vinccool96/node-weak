@@ -16,7 +16,7 @@
     "function",
     "callback"
   ],
-  "version": "1.1.4",
+  "version": "1.1.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
@@ -28,8 +28,9 @@
     "conf": "node-gyp configure",
     "gyp": "node-gyp build",
     "build": "tsc",
-    "install": "tsc && node-gyp rebuild",
+    "install": "node-gyp rebuild",
     "prepublish": "npm run build && npm pack",
+    "postinstall": "tsc",
     "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec"
   },
   "type": "module",
