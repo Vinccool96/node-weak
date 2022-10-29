@@ -2,3 +2,8 @@
 .idea/
 /test/**
 *.tgz
+**/Makefile
+*.Makefile
+*.gypi
+**/*.mk
+**/Release/**
