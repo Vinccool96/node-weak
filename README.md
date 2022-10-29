@@ -1,4 +1,4 @@
-node-weakref
+node-weak-ref
 =========
 ### Make weak references to JavaScript Objects.
 [![Build Status](https://github.com/Vinccool96/node-weak/workflows/Node%20CI/badge.svg)](https://github.com/TooTallNate/node-weak/actions?workflow=Node+CI)
