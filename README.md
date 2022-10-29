@@ -3,6 +3,8 @@ node-weak-ref
 ### Make weak references to JavaScript Objects.
 [![Build Status](https://github.com/Vinccool96/node-weak/workflows/Node%20CI/badge.svg)](https://github.com/TooTallNate/node-weak/actions?workflow=Node+CI)
 
+**WARNING: CURRENTLY ONLY WORKS ON NODE v16.17.1 INSTALLED VIA NVM. ANY HELP TO CIRCUMVENT THIS IS APPRECIATED**
+
 On certain rarer occasions, you run into the need to be notified when a JavaScript
 object is going to be garbage collected. This feature is exposed to V8's C++ API,
 but not to JavaScript.
@@ -24,13 +26,13 @@ Installation
 Install with `npm`:
 
 ``` bash
-$ npm install node-weakref
+$ npm install node-weak-ref
 ```
 
 Install with `yarn`:
 
 ``` bash
-$ yarn add node-weakref
+$ yarn add node-weak-ref
 ```
 
 
