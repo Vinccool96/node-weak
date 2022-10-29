@@ -19,7 +19,7 @@ bindings._setCallback(callback);
  */
 const CB = '_CB';
 
-declare type WeakRef<T> = {
+export type WeakRef<T> = {
   [key in keyof T]: T[key]
 }
 
