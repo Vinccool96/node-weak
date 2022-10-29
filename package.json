@@ -23,6 +23,7 @@
   },
   "main": "./build/lib/weak.js",
   "types": "./build/lib/weak.d.ts",
+  "gypfile": true,
   "scripts": {
     "conf": "node-gyp configure",
     "gyp": "node-gyp build",
