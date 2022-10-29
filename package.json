@@ -27,7 +27,7 @@
     "conf": "node-gyp configure",
     "gyp": "node-gyp build",
     "build": "tsc",
-    "prepublish": "yarn run conf && yarn run gyp && yarn run build && yarn pack",
+    "prepublish": "npm run build && npm pack",
     "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec"
   },
   "type": "module",
