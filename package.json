@@ -27,6 +27,7 @@
     "conf": "node-gyp configure",
     "gyp": "node-gyp build",
     "build": "tsc",
+    "install": "node-gyp rebuild",
     "prepublish": "npm run build && npm pack",
     "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec"
   },
