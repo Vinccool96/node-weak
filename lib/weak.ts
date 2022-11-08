@@ -37,6 +37,18 @@ export function create<T extends object>(object: T, callback?: (obj: T) => void)
   return weakref;
 }
 
+type FunctionsType = {
+  get?(ref: WeakRef<any>): unknown | undefined
+  isWeakRef?(ref: any): ref is WeakRef<any>
+  isDead?(ref: WeakRef<any> | WeakRef<undefined>): ref is WeakRef<undefined>;
+}
+
+const functions: FunctionsType = {}
+
+Object.keys(bindings).forEach(function (name) {
+  functions[name] = bindings[name];
+});
+
 /**
  * Adds callback to the Array of callback functions that will be invoked before the Object gets garbage collected. The callbacks get executed in the order that they are added.
  *
@@ -94,8 +106,7 @@ function callback(emitter) {
  * @param ref weak reference object
  */
 export function get<T>(ref: WeakRef<T>): T | undefined {
-  const emitter = bindings._getEmitter(ref);
-  return emitter.get(CB);
+  return functions.get!(ref) as T;
 }
 
 /**
@@ -104,8 +115,7 @@ export function get<T>(ref: WeakRef<T>): T | undefined {
  * @param ref weak reference object
  */
 export function isDead(ref: WeakRef<any> | WeakRef<undefined>): ref is WeakRef<undefined> {
-  const emitter = bindings._getEmitter(ref);
-  return emitter.isDead(CB);
+  return functions.isDead!(ref);
 }
 
 /**
@@ -113,9 +123,8 @@ export function isDead(ref: WeakRef<any> | WeakRef<undefined>): ref is WeakRef<u
  *
  * @param obj object to check
  */
-function isWeakRef(obj: any): obj is WeakRef<any> {
-  const emitter = bindings._getEmitter(obj);
-  return emitter.isWeakRef(CB);
+export function isWeakRef(obj: any): obj is WeakRef<any> {
+  return functions.isWeakRef!(obj);
 }
 
 // Keep consistency with old weak package
