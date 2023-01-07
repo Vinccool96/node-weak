@@ -3,13 +3,11 @@ node-weak-ref
 ### Make weak references to JavaScript Objects.
 [![Build Status](https://github.com/Vinccool96/node-weak/workflows/Node%20CI/badge.svg)](https://github.com/TooTallNate/node-weak/actions?workflow=Node+CI)
 
-**WARNING: CURRENTLY ONLY WORKS ON NODE v16.17.1 INSTALLED VIA NVM. ANY HELP TO CIRCUMVENT THIS IS APPRECIATED**
-
 On certain rarer occasions, you run into the need to be notified when a JavaScript
 object is going to be garbage collected. This feature is exposed to V8's C++ API,
 but not to JavaScript.
 
-That's where `node-weak` comes in! This module exports V8's `Persistent<Object>`
+That's where `node-weak-ref` comes in! This module exports V8's `Persistent<Object>`
 functionality to JavaScript. This allows you to create weak references, and
 optionally attach a callback function to any arbitrary JS object. The callback
 function will be invoked right before the Object is garbage collected (i.e. after
@@ -18,7 +16,6 @@ there are no more remaining references to the Object in JS-land).
 This module can, for example, be used for debugging; to determine whether or not
 an Object is being garbage collected as it should.
 Take a look at the example below for commented walkthrough scenario.
-
 
 Installation
 ------------
@@ -35,7 +32,6 @@ Install with `yarn`:
 $ yarn add node-weak-ref
 ```
 
-
 Example
 -------
 
@@ -43,7 +39,7 @@ Here's an example of calling a `cleanup()` function on a Object before it gets
 garbage collected:
 
 ``` js
-var weak = require('weak')
+var { create } = require('weak')
 
 // we are going to "monitor" this Object and invoke "cleanup"
 // before the object is garbage collected
@@ -53,7 +49,7 @@ var obj = {
 }
 
 // Here's where we set up the weak reference
-var ref = weak(obj, function () {
+var ref = create(obj, function () {
   // `this` inside the callback is the EventEmitter.
   console.log('"obj" has been garbage collected!')
 })
@@ -73,7 +69,6 @@ obj = null
 typeof ref.foo === 'undefined'
 ```
 
-
 Weak Callback Function "Best Practices"
 ---------------------------------------
 
@@ -88,7 +83,7 @@ work really well for this:
 
 ``` js
 var http = require('http')
-  , weak = require('weak')
+  , { create } = require('weak')
 
 http.createServer(function (req, res) {
   weak(req, gcReq)
@@ -105,13 +100,12 @@ function gcRes () {
 }
 ```
 
-
 API
 ---
 
-### Weakref weak(Object obj [, Function callback])
+### Weakref create(Object obj [, Function callback])
 
-The main exports is the function that creates the weak reference.
+The function that creates the weak reference.
 The first argument is the Object that should be monitored.
 The Object can be a regular Object, an Array, a Function, a RegExp, or any of
 the primitive types or constructor function created with `new`.
@@ -119,45 +113,38 @@ the primitive types or constructor function created with `new`.
 Optionally, you can set a callback function to be invoked
 before the object is garbage collected.
 
-
-### Object weak.get(Weakref ref)
+### Object get(Weakref ref)
 
 `get()` returns the actual reference to the Object that this weak reference was
 created with. If this is called with a dead reference, `undefined` is returned.
 
-
-### Boolean weak.isDead(Weakref ref)
+### Boolean isDead(Weakref ref)
 
 Checks to see if `ref` is a dead reference. Returns `true` if the original Object
 has already been GC'd, `false` otherwise.
 
-
-### Boolean weak.isWeakRef(Object obj)
+### Boolean isWeakRef(Object obj)
 
 Checks to see if `obj` is "weak reference" instance. Returns `true` if the
 passed in object is a "weak reference", `false` otherwise.
 
-
-### EventEmitter weak.addCallback(Weakref ref, Function callback)
+### EventEmitter addCallback(Weakref ref, Function callback)
 
 Adds `callback` to the Array of callback functions that will be invoked before the
 Object gets garbage collected. The callbacks get executed in the order that they
 are added.
 
-
-### EventEmitter weak.removeCallback(Weakref ref, Function callback)
+### EventEmitter removeCallback(Weakref ref, Function callback)
 
 Removes `callback` from the Array of callback functions that will be invoked before
 the Object gets garbage collected.
 
-
-### EventEmitter weak.removeCallbacks(Weakref ref)
+### EventEmitter removeCallbacks(Weakref ref)
 
 Empties the Array of callback functions that will be invoked before the Object gets
 garbage collected.
 
-
-### Array weak.callbacks(Weakref ref)
+### Array callbacks(Weakref ref)
 
 Returns an Array that `ref` iterates through to invoke the GC callbacks. This
 utilizes node's `EventEmitter#listeners()` function and therefore returns a copy

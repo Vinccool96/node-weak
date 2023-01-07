@@ -1,3 +1,8 @@
+2.0.0 / 2023-01-07
+==================
+
+* Removed default export
+* Ability to import in CommonJS with `require("node-weak-ref")` or in ESM with `import { create } from "node-weak-ref"`
 
 1.1.0 / 2022-10-23
 ==================
