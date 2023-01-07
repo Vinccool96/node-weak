@@ -16,7 +16,7 @@
     "function",
     "callback"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
@@ -32,7 +32,8 @@
   "files": [
     "dist",
     "lib",
-    "src"
+    "src",
+    "binding.gyp"
   ],
   "scripts": {
     "conf": "node-gyp configure",
