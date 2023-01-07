@@ -1,5 +1,5 @@
 import assert from "assert"
-import weak from "../lib/weak"
+import weak from "../src/weak"
 import { gc } from "expose-ts-gc"
 
 describe('create()', function () {

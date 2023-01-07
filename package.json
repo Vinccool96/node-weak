@@ -21,17 +21,22 @@
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
   },
-  "main": "./dist/weak.js",
+  "exports": {
+    "import": "./dist/weak.mjs",
+    "types": "./dist/weak.d.ts",
+    "require": "./dist/weak.cjs"
+  },
+  "main": "./dist/weak.cjs",
+  "module": "./dist/weak.mjs",
   "types": "./dist/weak.d.ts",
   "scripts": {
     "conf": "node-gyp configure",
     "gyp": "node-gyp build",
-    "build": "tsc",
+    "build": "unbuild",
     "install": "node-gyp rebuild",
     "prepublish": "npm run build && npm pack",
     "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec"
   },
-  "type": "module",
   "dependencies": {
     "bindings": "^1.5.0",
     "nan": "^2.17.0"
@@ -44,6 +49,7 @@
     "expose-ts-gc": "^1.0.0",
     "mocha": "^10.1.0",
     "ts-mocha": "^10.0.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "unbuild": "^1.0.2"
   }
 }

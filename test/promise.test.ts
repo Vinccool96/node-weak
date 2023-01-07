@@ -1,5 +1,5 @@
 import assert from "assert"
-import weak from "../lib/weak"
+import weak from "../src/weak"
 
 describe('promise', function () {
   if (!global.Promise) {

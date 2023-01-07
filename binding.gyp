@@ -1,7 +1,7 @@
 {
   'targets': [{
     'target_name': 'weakref',
-    'sources': [ 'src/weakref.cc' ],
+    'sources': [ 'lib/weakref.cc' ],
     'include_dirs': [
       '<!(node -e "require(\'nan\')")'
     ]
