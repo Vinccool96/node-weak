@@ -16,7 +16,7 @@
     "function",
     "callback"
   ],
-  "version": "2.0.1",
+  "version": "2.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/Vinccool96/node-weak.git"
@@ -40,7 +40,7 @@
     "gyp": "node-gyp build",
     "build": "unbuild",
     "install": "node-gyp rebuild",
-    "prepublish": "npm run build && npm pack",
+    "prepublishOnly": "npm run build && npm pack",
     "test": "ts-mocha 'test/**/*.test.ts' -gc --reporter spec",
     "lint": "eslint --fix \"{src,test}/**/*.ts\""
   },

@@ -39,31 +39,29 @@ Here's an example of calling a `cleanup()` function on a Object before it gets
 garbage collected:
 
 ``` js
-var { create } = require('weak')
+import { create } from "weak"
 
 // we are going to "monitor" this Object and invoke "cleanup"
 // before the object is garbage collected
-var obj = {
-    a: true
-  , foo: 'bar'
+let obj = {
+  a: true,
+  foo: "bar",
 }
 
 // Here's where we set up the weak reference
-var ref = create(obj, function () {
+const ref = create(obj, function () {
   // `this` inside the callback is the EventEmitter.
   console.log('"obj" has been garbage collected!')
 })
 
 // While `obj` is alive, `ref` proxies everything to it, so:
-ref.a   === obj.a
+ref.a === obj.a
 ref.foo === obj.foo
 
 // Clear out any references to the object, so that it will be GC'd at some point...
 obj = null
 
-//
-//// Time passes, and the garbage collector is run
-//
+// Time passes, and the garbage collector is run
 
 // `callback()` above is called, and `ref` now acts like an empty object.
 typeof ref.foo === 'undefined'
@@ -82,21 +80,21 @@ at the highest scope possible (top-level being the best). Named functions
 work really well for this:
 
 ``` js
-var http = require('http')
-  , { create } = require('weak')
+const http = require("http")
+const { create } = require("weak")
 
 http.createServer(function (req, res) {
   weak(req, gcReq)
   weak(res, gcRes)
-  res.end('Hello World\n')
+  res.end("Hello World\n")
 }).listen(3000)
 
 function gcReq () {
-  console.log('GC\'d `req` object')
+  console.log("GC'd `req` object")
 }
 
 function gcRes () {
-  console.log('GC\'d `res` object')
+  console.log("GC'd `res` object")
 }
 ```
 
